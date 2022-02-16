@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import socketserver
+import sys
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
     """
@@ -19,7 +20,12 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.request.sendall(self.data.upper())
 
 if __name__ == "__main__":
-    HOST, PORT = "0.0.0.0", 9999 #nicht "localhost", da der Server nur vom Raspberry aus erreichbar ist, aber nicht von anderen Rechner.
+    #HOST, PORT = "0.0.0.0", 9999 #nicht "localhost", da der Server nur vom Raspberry aus erreichbar ist, aber nicht von anderen Rechner.
+    HOST = "0.0.0.0"
+    if len(sys.argv) != 2:
+        print ("usage: " + sys.argv[0] + " <port>")
+        exit(1) 
+    port = int(sys.argv[1]) 
 
     # Create the server, binding to localhost on port 9999
     with socketserver.TCPServer((HOST, PORT), MyTCPHandler) as server:
